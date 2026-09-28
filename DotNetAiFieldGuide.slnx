@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FieldGuide.Api/FieldGuide.Api.csproj" />
+    <Project Path="src/FieldGuide.Core/FieldGuide.Core.csproj" />
+    <Project Path="src/FieldGuide.Data/FieldGuide.Data.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/FieldGuide.Core.Tests/FieldGuide.Core.Tests.csproj" />
+  </Folder>
+</Solution>

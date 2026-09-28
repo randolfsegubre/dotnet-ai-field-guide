@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>.NET AI Field Guide — Navigator</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff; --ink: #1a1a1a; --muted: #616161; --line: #e0e0e0;
+    --accent: #2b4fb0; --code-bg: #f4f4f4; --pill-bg: #eef1fb; --pill-ink: #2b4fb0;
+    --planned-bg: #fff8e6; --planned-ink: #8a6100; --cat-bg: #f7f8fb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#14161c; --ink:#e8e8e8; --muted:#9a9fae; --line:#2b2e3a; --accent:#8ea2ff; --code-bg:#1d2028; --pill-bg:#20263a; --pill-ink:#8ea2ff; --planned-bg:#2a2416; --planned-ink:#e0b34d; --cat-bg:#191b24; }
+  }
+  body { background: var(--bg); color: var(--ink); font: 15px/1.55 -apple-system, Segoe UI, sans-serif; max-width: 960px; margin: 0 auto; padding: 24px 20px 80px; }
+  h1 { font-size: 1.6rem; margin-bottom: 4px; }
+  .sub { color: var(--muted); margin-top: 0; }
+  .config-note { background: var(--pill-bg); border-radius: 8px; padding: 10px 14px; font-size: 0.85rem; margin-bottom: 24px; }
+  .config-note code { background: none; padding: 0; }
+  nav.jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 28px; }
+  nav.jump a { text-decoration: none; background: var(--pill-bg); color: var(--pill-ink); padding: 6px 12px; border-radius: 999px; font-size: 0.85rem; }
+  nav.jump a.misc { background: none; border: 1px solid var(--line); color: var(--ink); }
+
+  .category { margin-bottom: 36px; }
+  .category > h2 { font-size: 1.3rem; margin: 0 0 4px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+  .category > p.blurb { color: var(--muted); margin-top: 6px; }
+
+  section.topic { background: var(--cat-bg); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; margin: 14px 0; }
+  section.topic h3 { margin: 0 0 4px; font-size: 1.05rem; }
+  section.topic .status { font-size: 0.72rem; text-transform: uppercase; letter-spacing: .04em; padding: 2px 8px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
+  .status.done { background: #e2f5e6; color: #1f7a34; }
+  .status.planned { background: var(--planned-bg); color: var(--planned-ink); }
+  @media (prefers-color-scheme: dark) { .status.done { background:#173322; color:#7fd99a; } }
+  .topic-doclink { font-size: 0.85rem; margin: 4px 0 12px; }
+
+  .symbol { border-top: 1px solid var(--line); padding: 10px 0; }
+  .symbol:first-of-type { border-top: none; }
+  .symbol .name { font-family: ui-monospace, Consolas, monospace; font-weight: 600; }
+  .symbol .path { color: var(--muted); font-size: 0.82rem; font-family: ui-monospace, Consolas, monospace; }
+  .symbol .desc { margin: 4px 0 8px; }
+  .linkrow a { font-size: 0.82rem; text-decoration: none; color: var(--accent); margin-right: 14px; }
+  .linkrow a:hover { text-decoration: underline; }
+  code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
+</style>
+</head>
+<body>
+
+<h1>.NET AI Field Guide — Navigator</h1>
+<p class="sub">Grouped by category, so you can go straight to "the RAG section" (or any other
+theme), refresh what it is and when to use it, and jump to exactly where it lives in this app.</p>
+
+<div class="config-note">
+  <strong>One-time setup for this page:</strong> edit the two constants at the top of the
+  <code>&lt;script&gt;</code> at the bottom of this file: <code>LOCAL_REPO_ROOT</code> (the absolute
+  path to this repo on the machine you're opening this page from) and <code>GITHUB_REPO_BASE</code>
+  (once you've pushed this repo to GitHub). Every code link on this page is generated from those
+  two values.
+</div>
+
+<nav class="jump">
+  <a href="#cat-core">Core Chat &amp; Tools</a>
+  <a href="#cat-rag">Retrieval-Augmented Generation (RAG)</a>
+  <a href="#cat-agentic">Agentic &amp; Protocols</a>
+  <a href="#cat-security">Security &amp; Identity</a>
+  <a class="misc" href="00-glossary.md">Glossary</a>
+  <a class="misc" href="01-cheatsheet.md">Cheatsheet</a>
+  <a class="misc" href="02-architecture-guide.md">Architecture guide</a>
+  <a class="misc" href="../README.md">README</a>
+</nav>
+
+<!-- ================= CATEGORY: CORE CHAT & TOOLS ================= -->
+<div class="category" id="cat-core">
+  <h2>Core Chat &amp; Tools</h2>
+  <p class="blurb">The foundation everything else builds on: talking to a model, and letting it call your code.</p>
+
+  <section class="topic" id="topic-1">
+    <h3>Topic 1 — IChatClient basics &amp; tool calling <span class="status done">Built &amp; tested</span></h3>
+    <p class="topic-doclink">Full doc: <a href="topics/ichatclient-basics.md">topics/ichatclient-basics.md</a> — what it is, when to use it, gotchas actually hit.</p>
+
+    <div class="symbol" data-file="src/FieldGuide.Core/Chat/OllamaChatClientFactory.cs" data-line="49">
+      <div class="name">OllamaChatClientFactory.Create(modelId, baseUrl, requestTimeout)</div>
+      <div class="path">src/FieldGuide.Core/Chat/OllamaChatClientFactory.cs:49</div>
+      <div class="desc">Builds the IChatClient: wraps OllamaApiClient in a ChatClientBuilder with UseFunctionInvocation().</div>
+      <div class="linkrow"></div>
+    </div>
+
+    <div class="symbol" data-file="src/FieldGuide.Core/Chat/Tools/DateTimeTools.cs" data-line="19">
+      <div class="name">DateTimeTools.GetCurrentDateTime(timeZoneId)</div>
+      <div class="path">src/FieldGuide.Core/Chat/Tools/DateTimeTools.cs:19</div>
+      <div class="desc">The one real tool the model can call. [Description] attributes here are what the model actually reads.</div>
+      <div class="linkrow"></div>
+    </div>
+
+    <div class="symbol" data-file="src/FieldGuide.Core/Chat/ChatDemoService.cs" data-line="22">
+      <div class="name">ChatDemoService.AskAsync(userMessage, cancellationToken)</div>
+      <div class="path">src/FieldGuide.Core/Chat/ChatDemoService.cs:22</div>
+      <div class="desc">The Topic 1 pipeline itself: registers the tool, sends the message, returns the answer plus which tools fired.</div>
+      <div class="linkrow"></div>
+    </div>
+
+    <div class="symbol" data-file="src/FieldGuide.Api/Controllers/ChatDemoController.cs" data-line="22">
+      <div class="name">ChatDemoController.Ask(request, cancellationToken)</div>
+      <div class="path">src/FieldGuide.Api/Controllers/ChatDemoController.cs:22</div>
+      <div class="desc">HTTP entry point: POST /api/chat/demo. Calls ChatDemoService, then persists the exchange to SQL Server.</div>
+      <div class="linkrow"></div>
+    </div>
+
+    <div class="symbol" data-file="src/FieldGuide.Data/Entities/ChatTranscript.cs" data-line="8">
+      <div class="name">ChatTranscript (entity)</div>
+      <div class="path">src/FieldGuide.Data/Entities/ChatTranscript.cs:8</div>
+      <div class="desc">What gets saved to SQL Server for every demo question asked.</div>
+      <div class="linkrow"></div>
+    </div>
+
+    <div class="symbol" data-file="src/FieldGuide.Data/FieldGuideDbContext.cs" data-line="6">
+      <div class="name">FieldGuideDbContext</div>
+      <div class="path">src/FieldGuide.Data/FieldGuideDbContext.cs:6</div>
+      <div class="desc">The EF Core context. DocumentChunks table here too, reserved for the RAG category below.</div>
+      <div class="linkrow"></div>
+    </div>
+
+    <div class="symbol" data-file="src/FieldGuide.Web/src/App.tsx" data-line="17">
+      <div class="name">App() → handleAsk()</div>
+      <div class="path">src/FieldGuide.Web/src/App.tsx:17</div>
+      <div class="desc">React side: the "Try it" panel's click handler, calls askChatDemo and renders the result.</div>
+      <div class="linkrow"></div>
+    </div>
+
+    <div class="symbol" data-file="src/FieldGuide.Web/src/api/chatDemo.ts" data-line="24">
+      <div class="name">askChatDemo(message)</div>
+      <div class="path">src/FieldGuide.Web/src/api/chatDemo.ts:24</div>
+      <div class="desc">The one fetch() call that talks to the API. Base URL must match FieldGuide.Api's launchSettings.json.</div>
+      <div class="linkrow"></div>
+    </div>
+
+    <div class="symbol" data-file="tests/FieldGuide.Core.Tests/ChatDemoServiceTests.cs" data-line="1">
+      <div class="name">ChatDemoServiceTests</div>
+      <div class="path">tests/FieldGuide.Core.Tests/ChatDemoServiceTests.cs:1</div>
+      <div class="desc">Live tests against real Ollama, no mocks. Proves the tool is called when needed and not called when it isn't.</div>
+      <div class="linkrow"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= CATEGORY: RAG ================= -->
+<div class="category" id="cat-rag">
+  <h2>Retrieval-Augmented Generation (RAG)</h2>
+  <p class="blurb">The open-book-exam idea: look up your own documents at question time instead of
+  relying on the model's memory. Three topics, one story: embed, chunk, retrieve.</p>
+
+  <section class="topic" id="topic-2">
+    <h3>Topic 2 — Embeddings &amp; vector similarity <span class="status planned">Planned</span></h3>
+    <p class="topic-doclink">Full doc: <a href="topics/embeddings-and-similarity.md">topics/embeddings-and-similarity.md</a> — what an embedding is, cosine similarity, when to use it.</p>
+    <p class="desc">Will live in <code>src/FieldGuide.Core/Embeddings/</code>, using the already-pulled local <code>nomic-embed-text</code> model.</p>
+  </section>
+
+  <section class="topic" id="topic-3">
+    <h3>Topic 3 — Chunking strategies <span class="status planned">Planned</span></h3>
+    <p class="topic-doclink">Full doc: <a href="topics/chunking-strategies.md">topics/chunking-strategies.md</a> — why chunking matters, chunk-by-meaning vs. fixed size.</p>
+    <p class="desc">Will live in <code>src/FieldGuide.Core/Chunking/</code>.</p>
+  </section>
+
+  <section class="topic" id="topic-4">
+    <h3>Topic 4 — End-to-end RAG pipeline <span class="status planned">Planned</span></h3>
+    <p class="topic-doclink">Full doc: <a href="topics/rag-pipeline.md">topics/rag-pipeline.md</a> — the full 7-step pipeline, decision table (RAG vs. fine-tuning vs. plain prompting), real use cases.</p>
+    <p class="desc">Will live in <code>src/FieldGuide.Core/Rag/</code>, targeting SQL Server 2025's native <code>VECTOR</code> type (see <code>DocumentChunk.cs</code> remarks).</p>
+  </section>
+</div>
+
+<!-- ================= CATEGORY: AGENTIC & PROTOCOLS ================= -->
+<div class="category" id="cat-agentic">
+  <h2>Agentic &amp; Protocols</h2>
+  <p class="blurb">Beyond one tool call: standard ways for AI to reach external systems, and
+  multi-step planning.</p>
+
+  <section class="topic" id="topic-5">
+    <h3>Topic 5 — Model Context Protocol (MCP) from .NET <span class="status planned">Planned</span></h3>
+    <p class="topic-doclink">Full doc: <a href="topics/mcp-dotnet.md">topics/mcp-dotnet.md</a> — what MCP is, when to reach for it over plain tool calling.</p>
+    <p class="desc">Will live in <code>src/FieldGuide.Core/Mcp/</code>.</p>
+  </section>
+
+  <section class="topic" id="topic-6">
+    <h3>Topic 6 — Microsoft Agent Framework <span class="status planned">Planned</span></h3>
+    <p class="topic-doclink">Full doc: <a href="topics/agent-framework.md">topics/agent-framework.md</a> — what an agent is vs. a single tool call, multi-agent patterns.</p>
+    <p class="desc">Will live in <code>src/FieldGuide.Core/Agents/</code>.</p>
+  </section>
+</div>
+
+<!-- ================= CATEGORY: SECURITY & IDENTITY ================= -->
+<div class="category" id="cat-security">
+  <h2>Security &amp; Identity</h2>
+  <p class="blurb">Concept-level ground under this app's own authentication story.</p>
+
+  <section class="topic" id="topic-7">
+    <h3>Topic 7 — OpenID Connect (OIDC) &amp; OAuth 2.0 primer <span class="status planned">Planned</span></h3>
+    <p class="topic-doclink">Full doc: <a href="topics/oidc-oauth-primer.md">topics/oidc-oauth-primer.md</a> — concept only, honest gap noted.</p>
+    <p class="desc">No code planned, this stays a concept primer.</p>
+  </section>
+</div>
+
+<script>
+  // ---- ONE-TIME SETUP: edit these two lines ----
+  const LOCAL_REPO_ROOT = "D:/_DEV/Personal_Projects/source_code/dotnet-ai-field-guide";
+  const GITHUB_REPO_BASE = ""; // e.g. "https://github.com/randolfsegubre/dotnet-ai-field-guide/blob/main"
+  // ------------------------------------------------
+
+  document.querySelectorAll(".symbol").forEach((el) => {
+    const file = el.getAttribute("data-file");
+    const line = el.getAttribute("data-line");
+    const row = el.querySelector(".linkrow");
+
+    const vscodeLink = document.createElement("a");
+    vscodeLink.href = `vscode://file/${LOCAL_REPO_ROOT}/${file}:${line}`;
+    vscodeLink.textContent = "Open in VS Code →";
+    row.appendChild(vscodeLink);
+
+    if (GITHUB_REPO_BASE) {
+      const ghLink = document.createElement("a");
+      ghLink.href = `${GITHUB_REPO_BASE}/${file}#L${line}`;
+      ghLink.target = "_blank";
+      ghLink.rel = "noopener";
+      ghLink.textContent = "View on GitHub →";
+      row.appendChild(ghLink);
+    } else {
+      const note = document.createElement("span");
+      note.style.color = "var(--muted)";
+      note.style.fontSize = "0.8rem";
+      note.textContent = "(set GITHUB_REPO_BASE to enable a GitHub link)";
+      row.appendChild(note);
+    }
+  });
+</script>
+
+</body>
+</html>
