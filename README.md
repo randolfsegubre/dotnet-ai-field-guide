@@ -8,6 +8,21 @@ This is not a tutorial repo you read once. It's built to be revisited: when you'
 real problem later ("how did I wire up tool calling again?"), open [`docs/index.html`](docs/index.html)
 and jump straight to the exact function, at the exact line.
 
+## Quick guide
+
+**Live navigator:** https://randolfsegubre.github.io/dotnet-ai-field-guide/ — the same
+`docs/index.html` below, hosted via GitHub Pages, grouped by category so you can jump straight
+to the one you need:
+
+- [Core Chat & Tools](https://randolfsegubre.github.io/dotnet-ai-field-guide/#cat-core) — `IChatClient`, tool/function calling
+- [Retrieval-Augmented Generation (RAG)](https://randolfsegubre.github.io/dotnet-ai-field-guide/#cat-rag) — embeddings, chunking, the full pipeline
+- [Agentic & Protocols](https://randolfsegubre.github.io/dotnet-ai-field-guide/#cat-agentic) — Model Context Protocol (MCP), Microsoft Agent Framework
+- [Security & Identity](https://randolfsegubre.github.io/dotnet-ai-field-guide/#cat-security) — OpenID Connect (OIDC), OAuth 2.0
+
+Also see [`docs/INTERVIEW_GAPS_REFERENCE.md`](docs/INTERVIEW_GAPS_REFERENCE.md) — an honest,
+requirement-by-requirement study reference for interview prep, what's real evidence versus
+still a gap, kept in sync with what's actually built below.
+
 ## What's actually in here right now
 
 Topics are grouped by category in [`docs/index.html`](docs/index.html), so you can go straight
